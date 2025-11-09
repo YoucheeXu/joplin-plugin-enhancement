@@ -7,5 +7,6 @@
 		"allowJs": true,
 		"baseUrl": ".",
 		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true
 	}
 }
