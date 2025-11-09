@@ -83,6 +83,7 @@ const buildTooltips = (state: EditorState, context: ContentScriptContext): Toolt
                         commandIcon.classList.add(...commandInfo.icon.split(' '));
 
                         commandButton.setAttribute('aria-label', commandInfo.alt);
+                        commandButton.setAttribute("title", commandInfo.alt);
 
                         commandButton.appendChild(commandIcon);
                         container.appendChild(commandButton);
