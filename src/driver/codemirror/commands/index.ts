@@ -21,6 +21,10 @@ export function initCommands(cm, CodeMirror) {
     addCommand('markdownHL5', commandBridge.hL5.bind(commandBridge));
     addCommand('markdownHL6', commandBridge.hL6.bind(commandBridge));
     addCommand('markdownHL7', commandBridge.hL7.bind(commandBridge));
+
+    if (cm.cm6) {
+        addCommand("markdownInlineMath", commandBridge.markdownInlineMath.bind(commandBridge));
+    }
 }
 
 class CommandsBridge {
@@ -61,8 +65,14 @@ class CommandsBridge {
         }
         markdownInline(this.cm, `<mark style="background: ${color}">`, '</mark>', 'mark')
     }
-}
 
+    markdownInlineMath() {
+        if (isReadOnly(this.cm)) {
+            return;
+        }
+        markdownInline(this.cm, "$", "$");
+    }
+}
 
 /**
  * Converts selection into a markdown inline element (or removes formatting)

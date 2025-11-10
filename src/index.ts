@@ -83,6 +83,7 @@ joplin.plugins.register({
 						case 'markdownHL5':
 						case 'markdownHL6':
 						case 'markdownHL7':
+            			case 'markdownInlineMath':
 							await joplin.commands.execute('editor.execCommand', {
 								name: msg.content
 							});

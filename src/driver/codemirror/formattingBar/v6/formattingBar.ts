@@ -50,6 +50,11 @@ const commandInfos: CommandInfo[] = [
         name: 'markdownCode',
         icon: 'fas fa-code in-button',
     },
+    {
+        name: "markdownInlineMath",
+        icon: "fas fa-square-root-alt in-button",
+        alt: "Inline Math",
+    },
     ...([1, 2, 3, 4, 5, 6, 7].map((i): CommandInfo => ({
         name: `markdownHL${i}`,
         icon: `fas fa-circle color${i} in-button`,
