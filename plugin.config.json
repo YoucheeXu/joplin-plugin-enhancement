@@ -17,6 +17,8 @@
 		"driver/codemirror/indentBorder/index.ts",
 		"driver/codemirror/overlay/bulletList.ts",
 
-		"driver/codemirror/index.ts"
+		"driver/codemirror/index.ts",
+
+        "driver/codemirror/insertTable/v6/inputRowsCols/webview/webview.ts"
 	]
 }

@@ -1,0 +1,131 @@
+/* copy from https://github.com/personalizedrefrigerator/joplin-plugin-diff-tool/blob/main/src/pickNote */
+body {
+	max-height: 100vh;
+	max-width: 200vw;
+}
+
+#joplin-plugin-content {
+	/* width: min(600px, 200vw); */
+    width: 400px;
+	height: 200px;
+
+	display: flex;
+	flex-direction: column;
+}
+
+#joplin-plugin-content,
+body {
+	/* Work around a bug related to non-overlay scrollbars and dialog sizing. */
+	scrollbar-width: none;
+}
+
+#joplin-plugin-content * {
+	box-sizing: border-box;
+}
+
+.main-content {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+}
+
+/* 根容器：控制整体布局 */
+.table-dimensions-input {
+    display: flex;
+    /* flex-wrap: wrap; */
+    align-items: center; /* 垂直居中对齐（输入框与按钮高度一致） */
+    /* 支持换行，适配小屏幕 */
+    gap: 16px;
+    /* 输入项与按钮之间的间距 */
+    align-items: flex-end;
+    /* 垂直方向底部对齐（输入框与按钮高度一致） */
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    max-width: 100%; /* 最大宽度不超过父容器 */
+    box-sizing: border-box;
+}
+
+/* 行/列输入项容器：包含标签和输入框 */
+.dimension-input {
+    display: flex;
+    flex-direction: column;
+    /* 标签在上，输入框在下 */
+    gap: 6px;
+    /* 标签与输入框的间距 */
+    flex: 1;
+    /* 自动分配剩余空间，确保输入框宽度适配 */
+    min-width: 120px;
+    /* 最小宽度，避免过窄 */
+}
+
+/* 输入框标签样式 */
+.dimension-input label {
+    font-size: 14px;
+    color: #333;
+    /* 深灰色，提高可读性 */
+    font-weight: 500;
+    /* 中等加粗，突出标签 */
+}
+
+/* 数字输入框样式 */
+.dimension-input input[type="number"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+    /* 占满父容器宽度 */
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    /* 边框颜色过渡动画 */
+}
+
+/* 输入框聚焦状态：强化视觉反馈 */
+.dimension-input input[type="number"]:focus {
+    outline: none;
+    border-color: #4285f4;
+    /* 谷歌蓝，突出聚焦状态 */
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+    /* 轻微发光效果 */
+}
+
+/* 输入框错误状态（验证失败时通过JS添加该类） */
+.dimension-input input[type="number"].invalid {
+    border-color: #ea4335;
+    /* 错误红 */
+}
+
+/* 确认按钮样式 */
+.confirm-btn {
+    padding: 8px 16px;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    /* 背景色过渡 */
+    white-space: nowrap;
+    /* 避免按钮文字换行 */
+}
+
+/* 按钮悬停/活跃状态 */
+.confirm-btn:hover {
+    background-color: #3367d6;
+    /* 深色版本，增强反馈 */
+}
+
+.confirm-btn:active {
+    background-color: #2850b9;
+    /* 点击时更深色 */
+}
+
+/* 禁用状态（如需动态禁用按钮） */
+.confirm-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

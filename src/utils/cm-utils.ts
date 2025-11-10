@@ -41,3 +41,14 @@ export function isReadOnly(editor: any) {
         return (editor as Editor).isReadOnly();
     }
 }
+
+/**
+* Replaces the main selection with arbitrary text
+*
+* @param   {string}  text  The text to replace the selection with
+* this._instance: EditorView
+*/
+export function replaceSelection (view: EditorView, text: string): void {
+  const transaction = view.state.replaceSelection(text);
+  view.dispatch(transaction);
+}

@@ -1,4 +1,5 @@
 import { isReadOnly } from "../../../utils/cm-utils";
+import insertTable from "../insertTable/v6/insertTable";
 
 export function initCommands(cm, CodeMirror) {
     const commandBridge = new CommandsBridge(cm);
@@ -24,6 +25,13 @@ export function initCommands(cm, CodeMirror) {
 
     if (cm.cm6) {
         addCommand("markdownInlineMath", commandBridge.markdownInlineMath.bind(commandBridge));
+
+        CodeMirror.registerCommand(
+            "cm6-insert-table",
+            (rows: number, cols: number) => {
+                insertTable(cm.cm6, rows, cols);
+            }
+        );
     }
 }
 

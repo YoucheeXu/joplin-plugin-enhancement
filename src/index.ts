@@ -27,6 +27,7 @@ import {
 	ENABLE_TASK_RENDER,
 	EnhancementConfig,
 } from "./common";
+import inputRowsCols from './driver/codemirror/insertTable/v6/inputRowsCols';
 
 joplin.plugins.register({
 	onStart: async function() {
@@ -93,6 +94,26 @@ joplin.plugins.register({
 					}
 				}
 			}
+		);
+
+		await joplin.commands.register({
+			name: 'insertTable',
+			label: 'Insert Table',
+			iconName: 'fas fa-table',
+			execute: async () => {
+				const [rows, cols] = await inputRowsCols();
+				console.log(`index, rows: ${rows}, cols: ${cols}`);
+				await joplin.commands.execute('editor.execCommand', {
+					name: 'cm6-insert-table',
+					args: [rows, cols],
+				});
+			},
+		});
+
+		await joplin.views.toolbarButtons.create(
+			'insert-table',
+			'insertTable',
+			ToolbarButtonLocation.EditorToolbar
 		);
 
 		if (enhancementConfig.imageEnhancement) {
