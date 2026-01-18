@@ -1,5 +1,7 @@
 # Joplin Plugin Enhancement
 
+[![PayPal](https://img.shields.io/badge/Donate-PayPal-blue?style=for-the-badge&logo=paypal)](https://paypal.me/Youchee)
+
 > Generate from the Joplin plugin template: https://joplinapp.org/api/get_started/plugins/
 
 It contains several enhancement for both codemirror and markdown renderer.
