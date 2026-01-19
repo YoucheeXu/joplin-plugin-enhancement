@@ -89,8 +89,6 @@ function isMultiLineSelection(state: EditorState, range: SelectionRange) {
     return startLine.number !== endLine.number;
 }
 
-let isShow = false;
-
 // Global variable: Record the currently expanded secondary menu (used to close other menus)
 let activeSubMenu: HTMLElement | null = null;
 // Global event handler (avoid repeated creation)
@@ -104,7 +102,7 @@ const buildTooltips = (state: EditorState, context: ContentScriptContext): Toolt
             return !range.empty && !isMultiLineSelection(state, range);
         })
         .map((range): Tooltip => {
-            isShow = true;
+            console.debug(`build tooltip`);
             return {
                 pos: range.from,
                 above: true,
@@ -297,21 +295,26 @@ const buildTooltips = (state: EditorState, context: ContentScriptContext): Toolt
 
 const formattingBarStateField = (context: ContentScriptContext) => {
     const { StateField } = requireCodeMirrorState();
-    const { showTooltip } = requireCodeMirrorView();
+    const { showTooltip, EditorView } = requireCodeMirrorView();
 
     return StateField.define<readonly Tooltip[]>({
         // Initial state
         create: state => buildTooltips(state, context),
 
         update: (tooltips, tr) => {
-            // console.log(`Dragging2: ${isDragging}`);
-            if(isDragging && isShow){
-                isShow = false;
+            if (isDragging) {
+                console.debug(`dragging: hide tooltip`);
                 return [];
             }
-            isShow = true;
 
-            if (!tr.docChanged && !tr.selection) {
+            if (tr.state.selection.ranges.length > 1) {
+                console.debug(`multichoice: hide tooltip`);
+                return [];
+            }
+
+            if (!tr.docChanged && !tr.selection && tooltips.length >= 1) {
+                console.debug(`statefild isDragging = ${isDragging}`);
+                console.debug(`show tooltip`);
                 return tooltips;
             }
 

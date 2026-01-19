@@ -5,34 +5,70 @@ export let isDragging = false;
 let dragStopTimer: NodeJS.Timeout | null = null;
 const DRAG_STOP_THRESHOLD = 500;
 
-const dragDetection = (context: ContentScriptContext) => EditorView.domEventHandlers({
+const getTimestamp = () => new Date().toISOString().slice(11, 23); // HH:MM:SS:mmm
+
+const dragDetection = (_context: ContentScriptContext) => EditorView.domEventHandlers({
     // Mouse down: initialize drag state (prevent misjudgment of single clicks)
     pointerdown() {
         isDragging = false;
+        console.debug(`[pointerdown] isDragging = ${isDragging}`);
+        // Clear residual timer on mouse down
+        if (dragStopTimer) {
+            clearTimeout(dragStopTimer);
+            dragStopTimer = null;
+        }
     },
     // Mouse move + button pressed: mark as dragging state
     pointermove(e, view) {
+        console.debug(
+            `[PointerMove] e.buttons = ${e.buttons}`,
+        );
         if (e.buttons === 1) {
             // Only trigger for left-button dragging
             isDragging = true;
+            console.debug(`[PointerMove] isDragging = ${isDragging}`);
 
             if (dragStopTimer) clearTimeout(dragStopTimer);
             dragStopTimer = setTimeout(() => {
-                // 超过阈值未移动 → 标记拖拽结束
+                // Exceed threshold without movement → mark drag end
                 isDragging = false;
-                dragStopTimer = null; // 清空定时器标识
+                console.debug(`[Timer] isDragging = ${isDragging}`);
+                dragStopTimer = null;
+                // Empty transaction triggers StateField.update
+                view.dispatch({});
             }, DRAG_STOP_THRESHOLD);
         } else {
-            // 左键未按下 → 直接结束拖拽
+            // Left button not pressed → end drag immediately
             isDragging = false;
+            console.debug(`[No Left Button] isDragging = ${isDragging}`);
+            if (dragStopTimer) {
+                clearTimeout(dragStopTimer);
+                dragStopTimer = null;
+            }
         }
     },
     // Mouse up/leave: exit dragging state
-    pointerup() {
-        isDragging = false;
+    pointerup(_e, view) {
+        if(isDragging){
+            isDragging = false;
+            console.debug(`[PointerUp] isDragging = ${isDragging}`);
+            view.dispatch({});
+        }
+        if (dragStopTimer) {
+            clearTimeout(dragStopTimer);
+            dragStopTimer = null;
+        }
     },
-    pointerleave() {
-        isDragging = false;
+    pointerleave(_e, view) {
+        if(isDragging){
+            isDragging = false;
+            console.debug(`[PointerLeave] isDragging = ${isDragging}`);
+            view.dispatch({});
+        }
+        if (dragStopTimer) {
+            clearTimeout(dragStopTimer);
+            dragStopTimer = null;
+        }
     },
 });
 
